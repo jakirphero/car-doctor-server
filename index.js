@@ -11,7 +11,7 @@ require('dotenv').config()
 app.use(cors());
 app.use(express.json());
 
-console.log(process.env.DB_USER);
+// console.log(process.env.DB_USER);
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.1i6kwug.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
 
 const verifyJwt = (req, res, next) => {
     console.log('hitting verify jwt');
-    console.log(req.headers.authorization);
+    // console.log(req.headers.authorization);
     const authorization = req.headers.authorization;
     if (!authorization) {
         return res.status(401).send({ error: true, messages: 'unauthorized access' })
@@ -55,7 +55,7 @@ async function run() {
 
         app.post('/jwt', (req, res) => {
             const user = req.body;
-            console.log(user);
+            // console.log(user);
 
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '1h'
@@ -88,7 +88,7 @@ async function run() {
         app.get('/bookings', verifyJwt, async (req, res) => {
             // console.log(req.headers.authorization);
             const decoded = req.decoded;
-            console.log('came back after verify', decoded);
+            // console.log('came back after verify', decoded);
 
             if (decoded.email !== req.query.email) {
                 return res.status(403).send({ error: 1, messages: 'forbidden access' })
